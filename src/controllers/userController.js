@@ -1,4 +1,3 @@
-// src/controllers/userController.js
 const { prisma } = require('../config/database');
 const { hashPassword } = require('../utils/helpers');
 
@@ -144,11 +143,7 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, bio, phone, location, avatar, resume } = req.body;
-
-    // Check if user exists and has permission
     let where = { id };
-    
-    // Non-admin users can only update their own profile
     if (req.user.role !== 'ADMIN') {
       where.id = req.user.id;
     }
@@ -194,8 +189,6 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-
-    // Admins can delete any user, users can only delete themselves
     let where = { id };
     
     if (req.user.role !== 'ADMIN') {
