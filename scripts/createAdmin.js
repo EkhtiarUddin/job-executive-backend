@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function createAdmin() {
   try {
-    console.log('🔐 Creating admin user...');
+    console.log('Creating admin user');
 
     const hashedPassword = await bcrypt.hash('admin123', 10);
 
@@ -18,14 +18,14 @@ async function createAdmin() {
       }
     });
 
-    console.log('✅ Admin user created successfully!');
-    console.log('📧 Email:', admin.email);
-    console.log('🔑 Password: admin123');
-    console.log('\n⚠️  IMPORTANT: Please change the admin password after first login!');
+    console.log('Admin user created successfully!');
+    console.log('Email:', admin.email);
+    console.log('Password: admin123');
+    console.log('\nIMPORTANT: Please change the admin password after first login!');
 
     await prisma.$disconnect();
   } catch (error) {
-    console.error('❌ Error creating admin:', error.message);
+    console.error('Error creating admin:', error.message);
     await prisma.$disconnect();
     process.exit(1);
   }
