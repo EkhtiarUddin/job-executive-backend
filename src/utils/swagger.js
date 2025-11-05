@@ -1,7 +1,4 @@
-// src/utils/swagger.js
 const swaggerJsdoc = require('swagger-jsdoc');
-
-// src/utils/swagger.js - ADD ERROR SCHEMAS
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -86,7 +83,6 @@ const options = {
             }
           }
         },
-        // ADD ERROR RESPONSE SCHEMAS
         ErrorResponse: {
           type: 'object',
           properties: {
