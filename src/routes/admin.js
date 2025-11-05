@@ -1,4 +1,3 @@
-// src/routes/admin.js
 const express = require('express');
 const {
   getDashboardStats,
@@ -11,8 +10,6 @@ const auth = require('../middleware/auth');
 const { idValidation } = require('../middleware/validation');
 
 const router = express.Router();
-
-// Create role-specific middleware inline
 const authAdmin = auth(['ADMIN']);
 
 /**
