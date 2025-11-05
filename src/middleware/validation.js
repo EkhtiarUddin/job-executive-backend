@@ -1,4 +1,3 @@
-// src/middleware/validation.js
 const { body, validationResult, param } = require('express-validator');
 
 const handleValidationErrors = (req, res, next) => {
@@ -16,7 +15,6 @@ const handleValidationErrors = (req, res, next) => {
   next();
 };
 
-// Auth validations
 const registerValidation = [
   body('email')
     .isEmail()
@@ -47,7 +45,6 @@ const loginValidation = [
   handleValidationErrors
 ];
 
-// Job validations
 const jobValidation = [
   body('title')
     .trim()
@@ -83,7 +80,6 @@ const jobValidation = [
   handleValidationErrors
 ];
 
-// Application validations
 const applicationValidation = [
   body('coverLetter')
     .optional()
@@ -93,7 +89,6 @@ const applicationValidation = [
   handleValidationErrors
 ];
 
-// ID validation
 const idValidation = [
   param('id')
     .isLength({ min: 1 })
