@@ -1,4 +1,3 @@
-// src/controllers/jobController.js
 const { prisma } = require('../config/database');
 const { getPagination, buildSearchConditions } = require('../utils/helpers');
 
@@ -17,41 +16,28 @@ const getAllJobs = async (req, res) => {
     } = req.query;
     
     const { offset } = getPagination(page, limit);
-    
-    // Build search conditions
     const where = {
       isActive: true
     };
-
-    // Text search
     if (search) {
       const searchConditions = buildSearchConditions(search, [
         'title', 'description', 'company', 'requirements'
       ]);
       Object.assign(where, searchConditions);
     }
-
-    // Filters
     if (location) {
       where.location = { contains: location, mode: 'insensitive' };
     }
-
     if (type) {
       where.type = type;
     }
-
     if (category) {
       where.category = { contains: category, mode: 'insensitive' };
     }
-
     if (experience) {
       where.experience = { contains: experience, mode: 'insensitive' };
     }
-
-    // Salary range filter (basic implementation)
     if (salaryMin || salaryMax) {
-      // This is a simplified implementation
-      // In production, you'd want to parse salary strings properly
       where.OR = [
         { salary: { contains: salaryMin || '', mode: 'insensitive' } },
         { salary: { contains: salaryMax || '', mode: 'insensitive' } }
@@ -140,7 +126,7 @@ const getJob = async (req, res) => {
               }
             }
           },
-          take: 5 // Show only recent applications
+          take: 5
         }
       }
     });
@@ -166,7 +152,6 @@ const getJob = async (req, res) => {
   }
 };
 
-// src/controllers/jobController.js - FIXED
 const createJob = async (req, res) => {
   try {
     const {
@@ -182,7 +167,6 @@ const createJob = async (req, res) => {
       benefits
     } = req.body;
 
-    // Automatically use the logged-in user's ID as employerId
     const job = await prisma.job.create({
       data: {
         title,
@@ -195,7 +179,7 @@ const createJob = async (req, res) => {
         experience: experience || "Not specified",
         requirements,
         benefits,
-        employerId: req.user.id // AUTOMATICALLY from auth middleware
+        employerId: req.user.id
       },
       include: {
         employer: {
@@ -227,8 +211,6 @@ const updateJob = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
-
-    // Verify job ownership
     const existingJob = await prisma.job.findFirst({
       where: { 
         id, 
@@ -280,8 +262,6 @@ const updateJob = async (req, res) => {
 const deleteJob = async (req, res) => {
   try {
     const { id } = req.params;
-
-    // Verify job ownership
     const existingJob = await prisma.job.findFirst({
       where: { 
         id, 
@@ -385,8 +365,6 @@ const getEmployerJobs = async (req, res) => {
 const toggleJobStatus = async (req, res) => {
   try {
     const { id } = req.params;
-
-    // Verify job ownership
     const existingJob = await prisma.job.findFirst({
       where: { 
         id, 
