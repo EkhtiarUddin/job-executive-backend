@@ -1,6 +1,4 @@
-// src/controllers/adminController.js
 const { prisma } = require('../config/database');
-
 const getDashboardStats = async (req, res) => {
   try {
     const [
@@ -121,8 +119,6 @@ const manageUser = async (req, res) => {
         }
       });
     } else if (action === 'deactivate') {
-      // Implement deactivation logic here
-      // For now, we'll just return the user
       updatedUser = user;
     } else {
       return res.status(400).json({
@@ -149,8 +145,6 @@ const manageUser = async (req, res) => {
 const deleteUserAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-
-    // Prevent admin from deleting themselves
     if (id === req.user.id) {
       return res.status(400).json({
         success: false,
