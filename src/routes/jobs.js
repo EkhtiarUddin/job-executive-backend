@@ -1,4 +1,3 @@
-// src/routes/jobs.js
 const express = require('express');
 const {
   getAllJobs,
@@ -11,10 +10,7 @@ const {
 } = require('../controllers/jobController');
 const auth = require('../middleware/auth');
 const { jobValidation, idValidation } = require('../middleware/validation');
-
 const router = express.Router();
-
-// Create role-specific middleware inline
 const authEmployer = auth(['EMPLOYER']);
 
 /**
@@ -402,5 +398,4 @@ router.delete('/:id', authEmployer, idValidation, deleteJob);
  *         description: Internal server error
  */
 router.patch('/:id/toggle', authEmployer, idValidation, toggleJobStatus);
-
 module.exports = router;
