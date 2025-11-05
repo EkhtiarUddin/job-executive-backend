@@ -1,0 +1,115 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(SEEKER)
+  isVerified Boolean @default(true) // Now default to true since we verify before creating
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Profile fields
+  bio       String?
+  phone     String?
+  location  String?
+  avatar    String?
+  resume    String?
+  
+  // Relations
+  jobsPosted    Job[]
+  applications  Application[]
+  
+  @@map("users")
+}
+
+// NEW: Temporary table for unverified users
+model UserVerification {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(SEEKER)
+  bio       String?
+  phone     String?
+  location  String?
+  verificationToken String
+  verificationTokenExpires DateTime
+  createdAt DateTime @default(now())
+  
+  @@map("user_verifications")
+}
+
+model Job {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  company     String
+  salary      String
+  location    String
+  type        JobType  @default(FULL_TIME)
+  category    String
+  experience  String?  @default("Not specified")
+  requirements String
+  benefits    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  employerId  String
+  employer    User     @relation(fields: [employerId], references: [id], onDelete: Cascade)
+  applications Application[]
+
+  @@map("jobs")
+}
+
+model Application {
+  id          String   @id @default(cuid())
+  status      ApplicationStatus @default(APPLIED)
+  coverLetter String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  jobId    String
+  job      Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  seekerId String
+  seeker   User   @relation(fields: [seekerId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, seekerId])
+  @@map("applications")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYER
+  SEEKER
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  REMOTE
+  HYBRID
+}
+
+enum ApplicationStatus {
+  APPLIED
+  REVIEWED
+  SHORTLISTED
+  INTERVIEW
+  HIRED
+  REJECTED
+}
