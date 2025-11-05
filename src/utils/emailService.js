@@ -1,7 +1,4 @@
-// src/utils/emailService.js - FIXED TYPO
 const nodemailer = require('nodemailer');
-
-// Create transporter - FIXED: createTransport (not createTransporter)
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: process.env.EMAIL_PORT,
@@ -12,16 +9,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Verify transporter configuration
 transporter.verify((error, success) => {
   if (error) {
-    console.log('❌ Email transporter configuration failed:', error);
+    console.log('Email transporter configuration failed:', error);
   } else {
-    console.log('✅ Email transporter is ready to send messages');
+    console.log('Email transporter is ready to send messages');
   }
 });
 
-// Email templates
 const emailTemplates = {
   jobApplication: (jobTitle, companyName, applicantName) => ({
     subject: `Application Received - ${jobTitle}`,
@@ -104,12 +99,10 @@ const emailTemplates = {
   })
 };
 
-// Send email function
 const sendEmail = async (to, subject, html) => {
   try {
-    // If email is not configured, just log and return success
     if (!process.env.EMAIL_HOST || !process.env.EMAIL_USER) {
-      console.log('📧 Email not configured. Would send to:', to, 'Subject:', subject);
+      console.log('Email not configured. Would send to:', to, 'Subject:', subject);
       return { success: true, messageId: 'simulated' };
     }
 
@@ -121,14 +114,13 @@ const sendEmail = async (to, subject, html) => {
     };
 
     const result = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent successfully:', result.messageId);
+    console.log('Email sent successfully:', result.messageId);
     return { success: true, messageId: result.messageId };
   } catch (error) {
-    console.error('❌ Error sending email:', error);
+    console.error('Error sending email:', error);
     return { success: false, error: error.message };
   }
 };
-
 module.exports = {
   transporter,
   emailTemplates,
