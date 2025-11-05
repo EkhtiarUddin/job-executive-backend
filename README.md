@@ -1,7 +1,7 @@
-Job Executive - Backend API
+# Job Executive - Backend API
 A complete backend solution for a job portal application built with Node.js, Express, PostgreSQL, and Prisma. This application provides a robust API for connecting job seekers with employers.
 
-  Features
+## Features
 User Authentication - JWT-based login/register with role-based access
 
 Job Management - CRUD operations for job listings
@@ -20,7 +20,7 @@ File Upload - Resume and avatar upload support
 
 API Documentation - Complete Swagger/OpenAPI documentation
 
-  Tech Stack
+## Tech Stack
 Runtime: Node.js
 
 Framework: Express.js
@@ -41,38 +41,36 @@ Security: Helmet, CORS, Rate Limiting
 
 Email: Nodemailer
 
-  Prerequisites
+## Prerequisites
 Node.js (v18 or higher)
 
 PostgreSQL (v12 or higher)
 
 npm or yarn
 
-  Quick Start
+## Quick Start
 1. Clone and Install
 bash
-git clone <repository-url>
+git clone <https://github.com/EkhtiarUddin/job-executive-backend.git>
 cd job-executive-backend
 npm install
 2. Environment Setup
 Create a .env file in the root directory:
-
-  env
-rename the .env.example file as .env
+copy everything from the .env.example file and paste in .env file
 
 
-  API Documentation
+## API Documentation
 Once the server is running, access the interactive API documentation at:
 http://localhost:5000/api-docs
 
-  User Roles
+## User Roles
 ADMIN - Full system access, user management, analytics
 
 EMPLOYER - Post and manage jobs, view applications
 
 SEEKER - Search and apply for jobs, track applications
 
-  Authentication
+## Authentication
 All protected routes require a JWT token in the Authorization header:
 
 text
@@ -88,7 +86,7 @@ Test protected endpoints
 
 Note: Swagger UI requires re-authorization after page refresh
 
-  Testing Credentials
+## Testing Credentials
 After seeding, use these test accounts:
 
 Admin User
@@ -112,8 +110,9 @@ Password: seeker123
 
 Access: Search and apply for jobs
 
-  API Endpoints
-Authentication
+## API Endpoints
+
+### Authentication
 POST /api/auth/register - Register new user
 
 POST /api/auth/login - Login user
@@ -122,7 +121,7 @@ GET /api/auth/profile - Get user profile
 
 PUT /api/auth/profile - Update user profile
 
-Jobs
+### Jobs
 GET /api/jobs - Get all jobs (public, with filters)
 
 GET /api/jobs/:id - Get job by ID (public)
@@ -135,7 +134,7 @@ DELETE /api/jobs/:id - Delete job (Job Owner only)
 
 GET /api/jobs/employer - Get employer's jobs
 
-Applications
+### Applications
 POST /api/applications/job/:id/apply - Apply for job (Seeker only)
 
 GET /api/applications/my-applications - Get user's applications
@@ -146,7 +145,7 @@ PUT /api/applications/:id/status - Update application status (Job Owner only)
 
 GET /api/applications/stats - Get application statistics
 
-Users
+### Users
 GET /api/users - Get all users (Admin only)
 
 GET /api/users/:id - Get user by ID
@@ -159,7 +158,7 @@ POST /api/users/upload/avatar - Upload avatar
 
 POST /api/users/upload/resume - Upload resume
 
-Admin
+### Admin
 GET /api/admin/dashboard - Get dashboard statistics (Admin only)
 
 GET /api/admin/jobs - Get all jobs (Admin view)
@@ -168,7 +167,7 @@ PATCH /api/admin/users/:id - Manage users (Admin only)
 
 PATCH /api/admin/jobs/:id - Manage jobs (Admin only)
 
-  Search & Filters
+## Search & Filters
 The jobs endpoint supports advanced filtering:
 
 bash
@@ -189,7 +188,7 @@ page - Pagination page number
 
 limit - Results per page (default: 10)
 
-  Database Schema
+## Database Schema
 Main Models
 users - User accounts with roles and profiles
 
@@ -206,7 +205,7 @@ Jobs can have multiple Applications
 
 Applications belong to both User and Job
 
-  Deployment
+## Deployment
 Production Environment Variables
 env
 NODE_ENV=production
@@ -216,7 +215,8 @@ CLIENT_URL="your-frontend-domain"
 Build and Start
 bash
 npm start
-  Development Scripts
+
+## Development Scripts
 bash
 npm run dev          # Start development server with nodemon
 npm start           # Start production server
@@ -241,7 +241,7 @@ SQL injection prevention with Prisma
 
 File upload validation and size limits
 
-  Contributing
+## Contributing
 Fork the repository
 
 Create a feature branch: git checkout -b feature/amazing-feature
@@ -252,5 +252,5 @@ Push to the branch: git push origin feature/amazing-feature
 
 Open a Pull Request
 
-  License
+## License
 This project is licensed under the MIT License - see the LICENSE file for details.
