@@ -1,4 +1,3 @@
-// src/routes/users.js
 const express = require('express');
 const {
   getAllUsers,
@@ -11,10 +10,7 @@ const {
 const auth = require('../middleware/auth');
 const { idValidation } = require('../middleware/validation');
 const { upload } = require('../utils/fileUpload');
-
 const router = express.Router();
-
-// Create role-specific middleware inline
 const authAdmin = auth(['ADMIN']);
 
 /**
@@ -174,5 +170,4 @@ router.post('/upload/avatar', auth(), upload.single('avatar'), uploadAvatar);
  *         description: Resume uploaded successfully
  */
 router.post('/upload/resume', auth(), upload.single('resume'), uploadResume);
-
 module.exports = router;
