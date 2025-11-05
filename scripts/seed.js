@@ -1,4 +1,3 @@
-// scripts/seed.js
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
@@ -7,16 +6,12 @@ const prisma = new PrismaClient();
 
 const seedData = async () => {
   try {
-    console.log('🌱 Starting database seeding...');
-
-    // Clear existing data
+    console.log('Starting database seeding...');
     await prisma.application.deleteMany();
     await prisma.job.deleteMany();
     await prisma.user.deleteMany();
 
-    console.log('✅ Existing data cleared');
-
-    // Create admin user
+    console.log('Existing data cleared');
     const adminPassword = await bcrypt.hash('admin123', 12);
     const admin = await prisma.user.create({
       data: {
@@ -29,7 +24,6 @@ const seedData = async () => {
       }
     });
 
-    // Create employer users
     const employer1Password = await bcrypt.hash('employer123', 12);
     const employer1 = await prisma.user.create({
       data: {
@@ -58,7 +52,6 @@ const seedData = async () => {
       }
     });
 
-    // Create job seeker users
     const seeker1Password = await bcrypt.hash('seeker123', 12);
     const seeker1 = await prisma.user.create({
       data: {
@@ -85,9 +78,8 @@ const seedData = async () => {
       }
     });
 
-    console.log('✅ Users created');
+    console.log('Users created');
 
-    // Create sample jobs
     const jobs = await prisma.job.createMany({
       data: [
         {
@@ -158,11 +150,10 @@ const seedData = async () => {
       ]
     });
 
-    console.log('✅ Jobs created');
+    console.log('Jobs created');
 
-    // Create sample applications
     const createdJobs = await prisma.job.findMany();
-    
+
     await prisma.application.createMany({
       data: [
         {
@@ -192,35 +183,34 @@ const seedData = async () => {
       ]
     });
 
-    console.log('✅ Applications created');
+    console.log('Applications created');
 
     console.log(`
-🎉 Database seeding completed successfully!
+  Database seeding completed successfully!
 
-📋 Sample Data Created:
+  Sample Data Created:
 - 1 Admin user (admin@jobexecutive.com / admin123)
 - 2 Employer users
 - 2 Job Seeker users
 - 5 Job listings
 - 4 Job applications
 
-🔑 Default Login Credentials:
+Default Login Credentials:
 Admin: admin@jobexecutive.com / admin123
 Employer: tech@google.com / employer123
 Job Seeker: john.doe@email.com / seeker123
 
-🚀 You can now start the application and test the features.
+You can now start the application and test the features.
     `);
 
   } catch (error) {
-    console.error('❌ Seeding error:', error);
+    console.error('Seeding error:', error);
     process.exit(1);
   } finally {
     await prisma.$disconnect();
   }
 };
 
-// Run seeding if this script is executed directly
 if (require.main === module) {
   seedData();
 }
