@@ -1,15 +1,11 @@
-// src/utils/fileUpload.js - Simplified version without Cloudinary
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
-// Ensure uploads directory exists
 const uploadsDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Configure local storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let folder = 'general';
@@ -28,7 +24,6 @@ const storage = multer.diskStorage({
   }
 });
 
-// File filter
 const fileFilter = (req, file, cb) => {
   if (file.fieldname === 'avatar') {
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -53,11 +48,10 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 5 * 1024 * 1024,
   }
 });
 
-// Helper to get file URL
 const getFileUrl = (req, filename, folder) => {
   if (!filename) return null;
   return `${req.protocol}://${req.get('host')}/uploads/${folder}/${filename}`;
