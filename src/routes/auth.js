@@ -1,4 +1,3 @@
-// src/routes/auth.js
 const express = require('express');
 const { 
   register, 
@@ -194,7 +193,5 @@ router.get('/profile', auth(), getProfile);
  *         description: Profile updated successfully
  */
 router.put('/profile', auth(), updateProfile);
-
 router.get('/check', auth(), checkAuth);
-
 module.exports = router;
