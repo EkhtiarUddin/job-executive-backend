@@ -1,4 +1,3 @@
-// src/routes/applications.js
 const express = require('express');
 const {
   applyForJob,
@@ -11,8 +10,6 @@ const auth = require('../middleware/auth');
 const { applicationValidation, idValidation } = require('../middleware/validation');
 
 const router = express.Router();
-
-// Create role-specific middleware inline
 const authSeeker = auth(['SEEKER']);
 const authEmployer = auth(['EMPLOYER']);
 
@@ -148,5 +145,4 @@ router.post('/job/:id/apply', authSeeker, idValidation, applicationValidation, a
  *         description: Application status updated successfully
  */
 router.put('/:id/status', authEmployer, idValidation, updateApplicationStatus);
-
 module.exports = router;
