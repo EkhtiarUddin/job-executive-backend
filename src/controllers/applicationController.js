@@ -1,4 +1,3 @@
-// src/controllers/applicationController.js
 const { prisma } = require('../config/database');
 const { getPagination } = require('../utils/helpers');
 const { sendEmail, emailTemplates } = require('../utils/emailService');
@@ -7,8 +6,6 @@ const applyForJob = async (req, res) => {
   try {
     const { id: jobId } = req.params;
     const { coverLetter } = req.body;
-
-    // Check if job exists and is active
     const job = await prisma.job.findUnique({
       where: { 
         id: jobId,
@@ -30,8 +27,6 @@ const applyForJob = async (req, res) => {
         message: 'Job not found or no longer accepting applications'
       });
     }
-
-    // Check if already applied
     const existingApplication = await prisma.application.findUnique({
       where: {
         jobId_seekerId: {
@@ -73,7 +68,6 @@ const applyForJob = async (req, res) => {
       }
     });
 
-    // Send email notification (optional)
     try {
       const emailTemplate = emailTemplates.jobApplication(
         job.title,
@@ -87,7 +81,6 @@ const applyForJob = async (req, res) => {
       );
     } catch (emailError) {
       console.error('Failed to send email notification:', emailError);
-      // Don't fail the request if email fails
     }
 
     res.status(201).json({
@@ -171,8 +164,6 @@ const getJobApplications = async (req, res) => {
     const { id: jobId } = req.params;
     const { page = 1, limit = 10, status } = req.query;
     const { offset } = getPagination(page, limit);
-
-    // Verify job ownership
     const job = await prisma.job.findFirst({
       where: { 
         id: jobId, 
@@ -247,8 +238,6 @@ const updateApplicationStatus = async (req, res) => {
   try {
     const { id: applicationId } = req.params;
     const { status } = req.body;
-
-    // Verify application access (employer owns the job)
     const application = await prisma.application.findFirst({
       where: { 
         id: applicationId,
@@ -297,7 +286,6 @@ const updateApplicationStatus = async (req, res) => {
       }
     });
 
-    // Send email notification for status update
     try {
       const emailTemplate = emailTemplates.applicationStatusUpdate(
         application.job.title,
@@ -335,8 +323,8 @@ const getApplicationStats = async (req, res) => {
       by: ['status'],
       where: {
         OR: [
-          { job: { employerId: req.user.id } }, // Employer stats
-          { seekerId: req.user.id } // Seeker stats
+          { job: { employerId: req.user.id } },
+          { seekerId: req.user.id }
         ]
       },
       _count: {
