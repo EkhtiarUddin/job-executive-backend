@@ -174,7 +174,6 @@ const manageJob = async (req, res) => {
   try {
     const { id } = req.params;
     const { action } = req.body;
-
     const job = await prisma.job.findUnique({
       where: { id },
       include: {
@@ -194,7 +193,6 @@ const manageJob = async (req, res) => {
         message: 'Job not found'
       });
     }
-
     let updatedJob;
 
     if (action === 'toggle-active') {
@@ -284,7 +282,6 @@ const getAllJobsAdmin = async (req, res) => {
     });
 
     const total = await prisma.job.count({ where });
-
     res.json({
       success: true,
       data: {
