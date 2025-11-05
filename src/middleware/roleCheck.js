@@ -13,7 +13,6 @@ const authorize = (...roles) => {
         message: `Role '${req.user.role}' is not authorized to access this route. Required: ${roles.join(' or ')}`
       });
     }
-
     next();
   };
 };
