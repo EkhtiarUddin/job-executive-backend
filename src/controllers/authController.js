@@ -1,4 +1,3 @@
-// src/controllers/authController.js
 const { prisma } = require('../config/database');
 const { hashPassword, verifyPassword, generateToken, sanitizeUser, generateRandomString } = require('../utils/helpers');
 const { sendEmail, emailTemplates } = require('../utils/emailService');
@@ -6,8 +5,6 @@ const { sendEmail, emailTemplates } = require('../utils/emailService');
 const register = async (req, res) => {
   try {
     const { email, password, name, role, bio, phone, location } = req.body;
-
-    // Check if user exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return res.status(400).json({
@@ -16,14 +13,9 @@ const register = async (req, res) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await hashPassword(password);
-
-    // Generate verification token
     const verificationToken = generateRandomString(32);
     const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-
-    // Create user (unverified)
     const user = await prisma.user.create({
       data: {
         email,
@@ -39,7 +31,6 @@ const register = async (req, res) => {
       }
     });
 
-    // Send verification email
     try {
       const verificationUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/verify-email?token=${verificationToken}`;
       
@@ -54,13 +45,11 @@ const register = async (req, res) => {
         emailTemplate.html
       );
       
-      console.log('✅ Verification email sent to:', user.email);
+      console.log('Verification email sent to:', user.email);
     } catch (emailError) {
-      console.log('❌ Failed to send verification email:', emailError.message);
-      // Don't fail registration if email fails
+      console.log('Failed to send verification email:', emailError.message);
     }
 
-    // Sanitize user object
     const sanitizedUser = sanitizeUser(user);
 
     res.status(201).json({
@@ -68,7 +57,6 @@ const register = async (req, res) => {
       message: 'Registration successful! Please check your email to verify your account.',
       data: {
         user: sanitizedUser,
-        // Don't send token until email is verified
         token: null
       }
     });
@@ -84,8 +72,6 @@ const register = async (req, res) => {
 const verifyEmail = async (req, res) => {
   try {
     const { token } = req.body;
-
-    // Find user with valid verification token
     const user = await prisma.user.findFirst({
       where: {
         verificationToken: token,
@@ -102,7 +88,6 @@ const verifyEmail = async (req, res) => {
       });
     }
 
-    // Update user as verified and clear verification token
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {
@@ -111,8 +96,6 @@ const verifyEmail = async (req, res) => {
         verificationTokenExpires: null
       }
     });
-
-    // Generate JWT token now that user is verified
     const authToken = generateToken(updatedUser.id);
     const sanitizedUser = sanitizeUser(updatedUser);
 
@@ -155,11 +138,8 @@ const resendVerification = async (req, res) => {
       });
     }
 
-    // Generate new verification token
     const verificationToken = generateRandomString(32);
     const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-    // Update user with new token
     await prisma.user.update({
       where: { id: user.id },
       data: {
@@ -168,7 +148,6 @@ const resendVerification = async (req, res) => {
       }
     });
 
-    // Send new verification email
     try {
       const verificationUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/verify-email?token=${verificationToken}`;
       
@@ -183,9 +162,9 @@ const resendVerification = async (req, res) => {
         emailTemplate.html
       );
       
-      console.log('✅ Verification email resent to:', user.email);
+      console.log('Verification email resent to:', user.email);
     } catch (emailError) {
-      console.log('❌ Failed to resend verification email:', emailError.message);
+      console.log('Failed to resend verification email:', emailError.message);
     }
 
     res.json({
@@ -204,8 +183,6 @@ const resendVerification = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Find user
     const user = await prisma.user.findUnique({ 
       where: { email },
       select: {
@@ -225,7 +202,6 @@ const login = async (req, res) => {
       });
     }
 
-    // Check if email is verified
     if (!user.isVerified) {
       return res.status(401).json({
         success: false,
@@ -233,10 +209,7 @@ const login = async (req, res) => {
       });
     }
 
-    // Generate token
     const token = generateToken(user.id);
-
-    // Get full user data without password
     const userData = await prisma.user.findUnique({
       where: { id: user.id },
       select: {
@@ -366,7 +339,6 @@ const checkAuth = (req, res) => {
     data: { user: req.user }
   });
 };
-
 
 module.exports = {
   register,
