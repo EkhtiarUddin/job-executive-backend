@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+prisma/migrations
+
+# Environment variables
+.env
+
+# Uploads
+uploads/
+public/uploads/
