@@ -1,4 +1,3 @@
-// src/config/database.js
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient({
@@ -6,18 +5,16 @@ const prisma = new PrismaClient({
   errorFormat: 'pretty',
 });
 
-// Database connection test
 const connectDB = async () => {
   try {
     await prisma.$connect();
-    console.log('✅ Database connected successfully');
+    console.log('Database connected successfully');
   } catch (error) {
-    console.error('❌ Database connection failed:', error);
+    console.error('Database connection failed:', error);
     process.exit(1);
   }
 };
 
-// Graceful shutdown
 process.on('beforeExit', async () => {
   await prisma.$disconnect();
 });
