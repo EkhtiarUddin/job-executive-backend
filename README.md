@@ -73,7 +73,7 @@ SEEKER - Search and apply for jobs, track applications
 ## Authentication
 All protected routes require a JWT token in the Authorization header:
 
-text
+### text
 Authorization: Bearer <your-jwt-token>
 Getting Started with API Testing:
 Register or Login to get a JWT token
@@ -89,21 +89,21 @@ Note: Swagger UI requires re-authorization after page refresh
 ## Testing Credentials
 After seeding, use these test accounts:
 
-Admin User
+### Admin User
 Email: admin@jobexecutive.com
 
 Password: admin123
 
 Access: Full system access, user management
 
-Employer User
+### Employer User
 Email: tech@google.com
 
 Password: employer123
 
 Access: Post and manage jobs, view applications
 
-Job Seeker User
+### Job Seeker User
 Email: john.doe@email.com
 
 Password: seeker123
@@ -170,7 +170,7 @@ PATCH /api/admin/jobs/:id - Manage jobs (Admin only)
 ## Search & Filters
 The jobs endpoint supports advanced filtering:
 
-bash
+### bash
 GET /api/jobs?search=developer&location=remote&type=FULL_TIME&page=1&limit=10
 Available filters:
 
@@ -189,14 +189,14 @@ page - Pagination page number
 limit - Results per page (default: 10)
 
 ## Database Schema
-Main Models
+### Main Models
 users - User accounts with roles and profiles
 
 jobs - Job listings with company details and requirements
 
 applications - Job applications with status tracking
 
-Relationships
+### Relationships
 Users can have multiple Jobs (Employer role)
 
 Users can have multiple Applications (Seeker role)
@@ -224,7 +224,8 @@ npm run prisma:generate    # Generate Prisma client
 npm run prisma:migrate     # Run database migrations
 npm run prisma:seed        # Seed database with sample data
 npm run prisma:studio      # Open Prisma Studio for database management
-  Security Features
+  
+## Security Features
 JWT-based authentication with role-based access control
 
 Password hashing with bcrypt
