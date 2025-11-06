@@ -207,22 +207,36 @@ Applications belong to both User and Job
 
 ## Deployment
 Production Environment Variables
+
 env
+
 NODE_ENV=production
+
 DATABASE_URL="your-production-database-url"
+
 JWT_SECRET="strong-production-secret"
+
 CLIENT_URL="your-frontend-domain"
+
 Build and Start
+
 bash
+
 npm start
 
 ## Development Scripts
 bash
+
 npm run dev          # Start development server with nodemon
+
 npm start           # Start production server
+
 npm run prisma:generate    # Generate Prisma client
+
 npm run prisma:migrate     # Run database migrations
+
 npm run prisma:seed        # Seed database with sample data
+
 npm run prisma:studio      # Open Prisma Studio for database management
   
 ## Security Features
